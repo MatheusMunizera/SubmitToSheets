@@ -1,0 +1,168 @@
+<div class="container">
+    <div id="form">
+        <h2>Form</h2>
+        <h3>Dont put real informations</h3>
+
+        <form [formGroup]="form" (submit)="submitToSheets()" >
+
+            <div class="form-group" [ngClass]="{'is-invalid': f.name.errors && f.name.touched}">
+                <label>FULL NAME:</label>
+                <input type="text"  id="name" formControlName="name"
+                 placeholder="e.g. Tanjiro Kamado"
+                />
+                <div *ngIf="f.name.errors && f.name.touched" >
+                    <invalid-feedback *ngIf="f.name.errors.required" [message]="'Insert your full name'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.birthdate.errors && f.birthdate.touched}">
+                <label>BIRTHDATE:</label>
+                <input type="date" id="birthdate" formControlName="birthdate" (ngModelChange)="setAge($event)"/>
+                <div *ngIf="f.birthdate.errors && f.birthdate.touched" >
+                    <invalid-feedback *ngIf="f.birthdate.errors.required" [message]="'Insert your birthdate'"></invalid-feedback>
+                    <invalid-feedback *ngIf="f.birthdate.errors.lessThanToday" [message]="'Insert a valid birthdate'"></invalid-feedback>
+                    <invalid-feedback *ngIf="f.birthdate.errors.overSixTeen" [message]="'You need to be over 16 years old'"></invalid-feedback>
+                    <invalid-feedback *ngIf="f.birthdate.errors.muchYearsOld" [message]="'I know you are not the oldest person in the world '"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.age.errors && f.age.touched}" >
+                <label>AGE:</label>
+                <input type="number" id="age" formControlName="age" 
+                placeholder="e.g. 22" />
+                <div *ngIf="f.age.errors && f.age.touched" >
+                    <invalid-feedback *ngIf="f.age.errors.required" [message]="'Insert your age'"></invalid-feedback>
+                    <invalid-feedback *ngIf="f.age.errors.overSixTeen" [message]="'You need to be over 16 years old'"></invalid-feedback> 
+                     <invalid-feedback *ngIf="f.age.errors.muchYearsOld" [message]="'I know you are not the oldest person in the world '"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.cpf.errors && f.cpf.touched}">
+                <label>CPF:</label>
+                <input type="text" id="cpf" formControlName="cpf" placeholder="e.g. 34465563035"/>
+                <div *ngIf="f.cpf.errors && f.cpf.touched" >
+                    <invalid-feedback *ngIf="f.cpf.errors.required" [message]="'Insert your CPF'"></invalid-feedback>
+                     <invalid-feedback *ngIf="f.cpf.errors.cpfNotValid" [message]="'Insert a valid CPF'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.rg.errors && f.rg.touched}">
+                <label>RG:</label>
+                <input type="text" id="rg" formControlName="rg" placeholder="e.g. We dont have validations for this"/>
+                <div *ngIf="f.rg.errors && f.rg.touched" >
+                    <invalid-feedback *ngIf="f.rg.errors.required" [message]="'Insert your RG'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'is-invalid': f.gender.errors && f.gender.touched }">
+                <label>GENDER: </label>
+                <select formControlName="gender" id="gender">
+            <option disabled value="" selected >SELECT ONE</option>
+            <option value="F">FEMALE</option>
+            <option value="M">MALE</option>
+            <option value="O">OTHERS</option>
+          </select>
+          <div *ngIf="f.gender.errors && f.gender.touched" >
+              <invalid-feedback [message]="'Select your gender'"></invalid-feedback>
+        </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'is-invalid': f.sign.errors && f.sign.touched }">
+                <label>SIGN: </label>
+                <input type="text" id="sign" formControlName="sign" placeholder="e.g. Libra"/>
+                <div *ngIf="f.sign.errors && f.sign.touched" >
+                    <invalid-feedback *ngIf="f.sign.errors.required" [message]="'Insert your Sign'"></invalid-feedback>
+                    <invalid-feedback *ngIf="f.sign.errors.signNotExists" [message]="'Insert a valid sign'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.father.errors && f.father.touched}">
+                <label>FATHER'S FULL NAME: </label>
+                <input type="text" id="father" formControlName="father"  placeholder="e.g. Tanjuro Kamado"/>
+                <div *ngIf="f.father.errors && f.father.touched" >
+                    <invalid-feedback *ngIf="f.father.errors.required" [message]="'Insert your father name'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.mother.errors && f.mother.touched}">
+                <label>MOTHER'S FULL NAME: </label>
+                <input type="text" id="mother" formControlName="mother"  placeholder="e.g. Kie Kamado" />
+                <div *ngIf="f.mother.errors && f.mother.touched" >
+                    <invalid-feedback *ngIf="f.mother.errors.required" [message]="'Insert your mother name'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.email.errors && f.email.touched}">
+                <label>EMAIL: </label>
+                <input type="text" id="email" formControlName="email" placeholder="e.g. kamado.tanjiro@munizera.com"/>
+                <div *ngIf="f.email.errors && f.email.touched" >
+                    <invalid-feedback *ngIf="f.email.errors.required" [message]="'Insert your email'"></invalid-feedback>
+                    <invalid-feedback *ngIf="f.email.errors.email" [message]="'Insert a valid email'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.password.errors && f.password.touched}">
+                <label>PASSWORD: </label>
+                <input type="password" id="password" formControlName="password" />
+                <div *ngIf="f.password.errors && f.password.touched" >
+                    <invalid-feedback *ngIf="f.password.errors.required" [message]="'Insert a password'"></invalid-feedback>
+                    <invalid-feedback *ngIf="f.password.errors.strong" [message]="'Must have at least 8 characters containing one lowercase letter, one uppercase letter, one number and one special character'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.confirmPassword.errors && f.confirmPassword.touched}">
+                <label>CONFIRM PASSWORD</label>
+                <input type="password" id="confirmPassword" formControlName="confirmPassword" />
+                <div *ngIf="f.confirmPassword.errors && f.confirmPassword.touched" >
+                    <invalid-feedback *ngIf="f.confirmPassword.errors.required" [message]="'Confirm your password'"></invalid-feedback>
+                    <invalid-feedback *ngIf="f.confirmPassword.errors.mustMach" [message]="'Passwords not matching'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group" [ngClass]="{'is-invalid': f.cep.errors && f.cep.touched}">
+                <label>CEP</label>
+                <input type="number" id="cep" formControlName="cep" />
+                <div *ngIf="f.cep.errors && f.cep.touched" >
+                    <invalid-feedback *ngIf="f.cep.errors.required" [message]="'Insert your CEP'"></invalid-feedback>
+                    <invalid-feedback *ngIf="f.cep.errors.cep" [message]="'Inser a valid CEP'"></invalid-feedback>
+                  </div>
+            </div>
+            <div class="form-group">
+                <label> Address </label>
+                <input type="text" id="address" formControlName="address" />
+            </div>
+            <div class="form-group">
+                <label> Number </label>
+                <input type="text" id="number" formControlName="number" />
+            </div>
+            <div class="form-group">
+                <label>District</label>
+                <input type="text" id="district" formControlName="district" />
+            </div>
+            <div class="form-group">
+                <label>City</label>
+                <input type="text" id="city" formControlName="city" />
+            </div>
+            <div class="form-group">
+                <label>Province</label>
+                <input type="text" id="province" formControlName="province" />
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" id="phone" formControlName="phone" />
+            </div>
+            <div class="form-group">
+                <label>Cellphone</label>
+                <input type="text" id="cellphone" formControlName="cellphone" />
+            </div>
+            <div class="form-group">
+                <label>Height</label>
+                <input type="text" id="height" formControlName="height" />
+            </div>
+            <div class="form-group">
+                <label>weight</label>
+                <input type="text" id="weight" formControlName="weight" />
+            </div>
+            <div class="form-group">
+                <label>Blood Type</label>
+                <input type="text" id="blood" formControlName="blood" />
+            </div>
+            <div class="form-group">
+                <label>Favorite Color</label>
+                <input type="text" id="color" formControlName="color" />
+            </div>
+            <div class="form-buttons">
+                <button type="reset">Clean</button>
+                <button type="submit">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
