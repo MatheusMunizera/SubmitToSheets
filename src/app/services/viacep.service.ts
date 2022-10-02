@@ -32,7 +32,7 @@ export class ViacepService {
           if(data)
             console.log(data as AddressViewModel)
 
-          return data ? null : {cep: true}
+          return (data ? null : {cep: true})
 
         }
         ),
