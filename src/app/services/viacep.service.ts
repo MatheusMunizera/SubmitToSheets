@@ -17,7 +17,6 @@ export class ViacepService {
 
   private queryCEP(cep : string){
     const headers = new HttpHeaders({ 'Access-Control-Allow-Origin': '*'})
-    console.log(cep)
     return this.http.get(`${this.VIACEP_URL}0${cep}/json`, {headers: headers})
   }
 
@@ -28,12 +27,14 @@ export class ViacepService {
       return control.valueChanges.pipe(
         switchMap((cep) =>
           this.queryCEP(cep)
-           
-
-        
         ),
-        map((data) => 
-        (data ? {cep: true} : null)
+        map((data) => {
+          if(data)
+            console.log(data as AddressViewModel)
+
+          return data ? null : {cep: true}
+
+        }
         ),
         first()
       );
