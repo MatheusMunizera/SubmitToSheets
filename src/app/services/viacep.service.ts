@@ -9,7 +9,7 @@ import { AddressViewModel } from '../view-models/address.view-model';
 })
 export class ViacepService {
 
-  private readonly VIACEP_URL = "http://viacep.com.br/ws/" 
+  private readonly VIACEP_URL = "https://viacep.com.br/ws/" 
   public AddressInfo  = new BehaviorSubject<AddressViewModel>({});
 
   constructor(private http : HttpClient) {  
