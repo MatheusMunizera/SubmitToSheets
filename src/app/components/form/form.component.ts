@@ -5,8 +5,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { distinctUntilChanged, empty, switchMap, tap } from 'rxjs';
 import { ValidatorField } from 'src/app/helpers/validator/ValidatorField';
 import { ViacepService } from 'src/app/services/viacep.service';
+import { AddressViewModel } from 'src/app/view-models/address.view-model';
 
 @Component({
   selector: 'app-form',
@@ -15,7 +17,6 @@ import { ViacepService } from 'src/app/services/viacep.service';
 })
 export class FormComponent implements OnInit {
   form!: FormGroup;
-
 
   constructor(private formBuilder: FormBuilder, private viacepService : ViacepService) {}
 
@@ -26,6 +27,8 @@ export class FormComponent implements OnInit {
   get f(): any {
     return this.form.controls;
   }
+
+ 
   private validation(): void {
     const formOptions: AbstractControlOptions = {
       validators: [
@@ -37,8 +40,7 @@ export class FormComponent implements OnInit {
         ValidatorField.MuchYearsOldAge('age'),
         ValidatorField.ValidCPF('cpf'),
         ValidatorField.SignNotExists('sign'),
-        ValidatorField.MustBeStrong('password')
-        
+        ValidatorField.MustBeStrong('password'),       
       ],
     };
     this.form = this.formBuilder.group(
@@ -55,14 +57,12 @@ export class FormComponent implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required]],
         confirmPassword: ['', Validators.required],
-        cep: ['', Validators.required,[this.viacepService.validateCEPInput()]] ,
+        cep: ['', Validators.required,], 
         address: ['', Validators.required],
         number: ['', Validators.required],
         district: ['', Validators.required],
         city: ['', Validators.required],
-        province: ['', Validators.required],
-        phone: ['', Validators.required],
-        cellphone: ['', Validators.required],
+        phone: ['', Validators.required ],
         height: ['', Validators.required],
         weight: ['', Validators.required],
         blood: ['', Validators.required],
@@ -70,6 +70,28 @@ export class FormComponent implements OnInit {
       },
       formOptions
     );
+    this.CEPValidator()
+    
+  }
+
+  CEPValidator(){
+    this.form.get('cep')?.statusChanges
+    .pipe(
+      distinctUntilChanged(),
+      switchMap(status => status === 'VALID' ?
+        this.viacepService.queryCEP(this.form.get('cep')?.value)
+        : empty()
+      )
+    )
+    .subscribe(dados  => dados ? this.AutoCompleteCEP(dados) : {});
+  }
+
+  AutoCompleteCEP(dados : AddressViewModel){
+    this.form.patchValue({
+      address: dados.logradouro,
+      district: dados.bairro,
+      city: dados.localidade,
+    })
   }
 
   submitToSheets() {
@@ -99,4 +121,6 @@ export class FormComponent implements OnInit {
     return age;
 
   }
+
+
 }

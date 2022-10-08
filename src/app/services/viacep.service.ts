@@ -1,44 +1,63 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { AbstractControl } from '@angular/forms';
-import { BehaviorSubject, first, map, switchMap } from 'rxjs';
+import { HttpClient,  HttpHeaders } from '@angular/common/http';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { distinctUntilChanged, empty, map, switchMap, tap } from 'rxjs';
 import { AddressViewModel } from '../view-models/address.view-model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ViacepService {
+  private readonly VIACEP_URL = 'https://viacep.com.br/ws/';
+  
+  constructor(private http: HttpClient) {}
 
-  private readonly VIACEP_URL = "https://viacep.com.br/ws/" 
-  public AddressInfo  = new BehaviorSubject<AddressViewModel>({});
+  public queryCEP(cep: string) {
+    const headers = new HttpHeaders({ 'Access-Control-Allow-Origin': '*' });
 
-  constructor(private http : HttpClient) {  
+    return this.http.get(`${this.VIACEP_URL}${cep}/json`, { headers: headers });
   }
 
-  private queryCEP(cep : string){
-    const headers = new HttpHeaders({ 'Access-Control-Allow-Origin': '*'})
-    return this.http.get(`${this.VIACEP_URL}0${cep}/json`, {headers: headers})
-  }
-
-  validateCEPInput(){
-
+  ExistsCEPValidate() {
 
     return (control: AbstractControl) => {
+
+      const address = control['_parent']['controls']['address']; 
+      const district = control['_parent']['controls']['district']; 
+      const city = control['_parent']['controls']['city']; 
+
       return control.valueChanges.pipe(
-        switchMap((cep) =>
-          this.queryCEP(cep)
-        ),
-        map((data) => {
-          if(data)
-            console.log(data as AddressViewModel)
+        map((cep) => {
+          this.queryCEP(cep).subscribe({
+            error: (err) => {
+              address.setValue("")
+                district.setValue("")
+                city.setValue("")
+              control.setErrors({ cep: true });
+              return { cep: true };
+            },
+            next: (data : AddressViewModel ) => {
+              if (data && !data.hasOwnProperty('erro')) {
+                address.setValue(data?.logradouro)
+                district.setValue(data?.bairro)
+                city.setValue(data?.localidade)
+                control.setErrors(null);
 
-          return (data ? null : {cep: true})
-
-        }
-        ),
-        first()
+                return null;
+              } else {
+                address.setValue("")
+                district.setValue("")
+                city.setValue("")
+                control.setErrors({ cep: true });
+                return { cep: true };
+              }
+            },
+          });
+        })
       );
     };
-  }
+   }
 
+   
+   
 }

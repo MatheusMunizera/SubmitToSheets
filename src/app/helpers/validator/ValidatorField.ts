@@ -1,4 +1,4 @@
-import { AbstractControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 export class ValidatorField {
   static MustMach(controlName: string, mathchingControlName: string): any {
@@ -88,27 +88,12 @@ export class ValidatorField {
     };
   }
 
-  static ValidateCEP(controlName: string): any{
-    return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
-      const control = formGroup.controls[controlName];
-      const strongRegex = new RegExp("/^[0-9]{5}-[0-9]{3}$/");
-
-      
-      if(!strongRegex.test(control.value))
-         control.setErrors({ strong: true });
-
-      if (control.errors && !control.errors['strong']) return null;
-
-      return null;
-    };
-  }
+   
   static MustBeStrong(controlName: string): any {
     return (group: AbstractControl) => {
       const formGroup = group as FormGroup;
       const control = formGroup.controls[controlName];
       const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-
       
       if(!strongRegex.test(control.value))
          control.setErrors({ strong: true });

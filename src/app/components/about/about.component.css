@@ -1,0 +1,15 @@
+.introduce{
+    line-height: 1;
+    margin-bottom: 1.2rem !important;
+}
+
+.text-center{
+    text-align: center;
+}
+@media (max-width: 360px){
+
+    .introduce{
+        font-size: 2.5em;
+       
+    }
+}

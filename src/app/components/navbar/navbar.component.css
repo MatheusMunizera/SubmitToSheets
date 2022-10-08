@@ -1,0 +1,66 @@
+.title-page{
+    font-size: 4em;
+    margin: 0;
+}
+
+
+
+.menu{
+    border-top: #505050 2px solid;
+    border-bottom:  #505050 2px solid;
+}
+
+.menu ul li:hover{
+    text-decoration: underline;
+}
+
+.menu ul li:hover{
+    margin-top: -25px;
+    margin-bottom: -25px;
+}
+
+.menu ul li{
+    margin-top: -25px;
+    margin-bottom: -25px;
+    height: 50px;
+}
+
+.menu ul{
+    text-align: center;
+}
+
+.menu ul li{
+    font-size: 1.5em;
+    margin-left: 15px;
+    margin-right: 15px;
+    display: inline-block;
+    list-style: none;
+}
+
+
+@media (max-width: 360px){
+
+    .title-page{
+        font-size: 3em;
+    }
+}
+
+
+
+@media (min-width: 768px){
+    .title-page{
+        font-size: 8em;
+    }
+
+    .menu ul li{
+        font-size: 2em;
+    }
+}
+
+@media (min-width: 992px){
+
+    .menu ul li{
+        font-size: 2em;
+    }
+    
+}
