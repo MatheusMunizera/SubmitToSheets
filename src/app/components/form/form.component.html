@@ -190,7 +190,7 @@
                   </div>
             </div>
             <div class="form-group ml-2" [ngClass]="{'is-invalid': f.blood.errors && f.blood.touched}">
-                <label>BLOOD Type</label>
+                <label>BLOOD TYPE</label>
                 <input type="text" id="blood" formControlName="blood" placeholder="eg. O+ "/>
                 <div *ngIf="f.blood.errors && f.blood.touched" >
                     <invalid-feedback *ngIf="f.blood.errors.required" [message]="'Insert your blood type'"></invalid-feedback>
