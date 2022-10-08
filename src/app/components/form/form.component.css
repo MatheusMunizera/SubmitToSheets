@@ -58,6 +58,16 @@ form{
 
 
 
+    .is-invalid input {
+        
+        border-color: #dc3545 !important;
+    }
+
+    .is-invalid select {
+        
+        border-color: #dc3545 !important;
+    }
+
 .d-block{
     display: block !important;
 }
