@@ -56,22 +56,7 @@ form{
 
 
 
-.invalid-feedback {
-    width: 100%;
-    margin-top: .1rem;
-    color: #dc3545;
-    text-transform: uppercase;
-    }
 
-    .is-invalid input {
-        
-        border-color: #dc3545 !important;
-    }
-
-    .is-invalid select {
-        
-        border-color: #dc3545 !important;
-    }
 
 .d-block{
     display: block !important;
