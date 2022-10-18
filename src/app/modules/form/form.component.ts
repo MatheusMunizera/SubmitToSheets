@@ -9,6 +9,8 @@ import { distinctUntilChanged, empty, switchMap, tap } from 'rxjs';
 import { ValidatorField } from 'src/app/helpers/validator/ValidatorField';
 import { ViacepService } from 'src/app/services/viacep.service';
 import { AddressViewModel } from 'src/app/view-models/address.view-model';
+import { SheetsService } from '../../services/sheets.service';
+import { FormsViewModel } from '../../view-models/forms.view-model';
 
 @Component({
   selector: 'app-form',
@@ -18,10 +20,11 @@ import { AddressViewModel } from 'src/app/view-models/address.view-model';
 export class FormComponent implements OnInit {
   form!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private viacepService : ViacepService) {}
+  constructor(private formBuilder: FormBuilder, private viacepService : ViacepService, private sheetsService : SheetsService) {}
 
   ngOnInit(): void {
     this.validation();
+    
   }
 
   get f(): any {
@@ -96,7 +99,8 @@ export class FormComponent implements OnInit {
 
   submitToSheets() {
     const formObj = this.form.getRawValue();
-    console.log(formObj);
+    this.sheetsService.writeOnSheet(formObj as FormsViewModel)
+    //console.log(formObj);
   }
 
   setAge(event : any){
