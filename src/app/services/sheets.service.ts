@@ -38,7 +38,6 @@ const teste = {
 }
 const teste2= new SheetsViewModel(forms)
     this.http.post(`${this.SHEETS_URL}`, teste).subscribe(res => console.log(res))
-    //return this.http.get(`${this.VIACEP_URL}${cep}/json`, { headers: headers });
   }
   
    
