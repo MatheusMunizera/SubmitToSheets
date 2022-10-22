@@ -6,12 +6,13 @@
                 You dont need to use real informations, try to generate data scraping from 4Devs website.
             </p>
         </div>
-        
-
+    
         <form [formGroup]="form" (submit)="submitToSheets()" >
-
+                   
             <div class="form-buttons">
-                <button type="button">Generate Data</button >
+                <a type="button" class="sheets-link" href="https://docs.google.com/spreadsheets/d/1PFCI_GqZ9p3aLPLwOA4oS55ylx-0g0wPDMEeDcrvtIk/edit?usp=sharing" target="_blank">Sheets</a>
+                <a type="button" class="sheets-link" href="https://github.com/MatheusMunizera/SheetsAPI" target="_blank">API</a>
+                <button type="button" (click)="getData()">Generate Data</button >
                 <button type="reset">Clean</button>
                 <button type="submit">Send</button>
             </div>
@@ -52,9 +53,9 @@
                 <label class="d-block">GENDER: </label>
                 <select formControlName="gender" id="gender">
             <option disabled value="" selected >SELECT ONE</option>
-            <option value="F">FEMALE</option>
-            <option value="M">MALE</option>
-            <option value="O">OTHERS</option>
+            <option value="FEMALE">FEMALE</option>
+            <option value="MALE">MALE</option>
+            <option value="OTHERS">OTHERS</option>
           </select>
           <div *ngIf="f.gender.errors && f.gender.touched" >
               <invalid-feedback [message]="'Select your gender'"></invalid-feedback>
@@ -169,7 +170,7 @@
         <div class="resize">
             <div class="form-group" [ngClass]="{'is-invalid': f.phone.errors && f.phone.touched}">
                 <label>PHONE</label>
-                <input type="number" id="phone" formControlName="phone" placeholder="eg. +13052237060" /> 
+                <input type="text" id="phone" formControlName="phone" placeholder="eg. +13052237060" /> 
                 <div *ngIf="f.phone.errors && f.phone.touched" >
                     <invalid-feedback *ngIf="f.phone.errors.required" [message]="'Insert your phone number'"></invalid-feedback>
                     <invalid-feedback *ngIf="f.phone.errors.minlength" [message]="'Insert a valid phone number'"></invalid-feedback>
@@ -189,12 +190,22 @@
                     <invalid-feedback *ngIf="f.weight.errors.required" [message]="'Insert your weight'"></invalid-feedback>
                   </div>
             </div>
-            <div class="form-group ml-2" [ngClass]="{'is-invalid': f.blood.errors && f.blood.touched}">
-                <label>BLOOD TYPE</label>
-                <input type="text" id="blood" formControlName="blood" placeholder="eg. O+ "/>
-                <div *ngIf="f.blood.errors && f.blood.touched" >
-                    <invalid-feedback *ngIf="f.blood.errors.required" [message]="'Insert your blood type'"></invalid-feedback>
-                  </div>
+            <div class="form-group text-center  ml-2" [ngClass]="{'is-invalid': f.blood.errors && f.blood.touched}" >
+                <label class="d-block">BLOOD TYPE: </label>
+                <select formControlName="blood" placeholder="eg. O+ " id="blood">
+            <option disabled value="" selected >SELECT ONE</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+          </select>
+          <div *ngIf="f.blood.errors && f.blood.touched" >
+            <invalid-feedback *ngIf="f.blood.errors.required" [message]="'Insert your blood type'"></invalid-feedback>
+          </div>
             </div>
             <div class="form-group ml-2" [ngClass]="{'is-invalid': f.color.errors && f.color.touched}">
                 <label>FAVORITE COLOR</label>
