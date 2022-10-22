@@ -1,9 +1,10 @@
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { throwError } from 'rxjs';
 
 export class ValidatorField {
   static MustMach(controlName: string, mathchingControlName: string): any {
     return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
+      const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
       const matchingControl = formGroup.controls[mathchingControlName]
 
@@ -23,7 +24,7 @@ export class ValidatorField {
 
   static LessThanToday(controlName: string): any {
     return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
+      const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
       let today: Date = new Date();
 
@@ -39,7 +40,7 @@ export class ValidatorField {
 
   static MuchYearsOld(controlName: string): any {
     return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
+      const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
       let birthdate = new Date(control.value);
 
@@ -55,7 +56,7 @@ export class ValidatorField {
   }
   static OverSixTeen(controlName: string): any {
     return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
+      const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
       let birthdate = new Date(control.value);
 
@@ -76,7 +77,7 @@ export class ValidatorField {
   }
   static OverSixTeenAge(controlName: string): any {
     return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
+      const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
 
       if (control.value < 16) control.setErrors({ overSixTeen: true });
@@ -91,7 +92,7 @@ export class ValidatorField {
    
   static MustBeStrong(controlName: string): any {
     return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
+      const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
       const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
       
@@ -106,7 +107,7 @@ export class ValidatorField {
 
   static MuchYearsOldAge(controlName: string): any {
     return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
+      const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
 
       if (control.value > 100) control.setErrors({ muchYearsOld: true });
@@ -119,7 +120,7 @@ export class ValidatorField {
 
   static SignNotExists(controlName: string): any {
     return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
+      const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
       let sign = control.value
       let rgx = sign.normalize("NFD").replace(/[^a-zA-Z\s]/g, "")
@@ -139,7 +140,7 @@ export class ValidatorField {
 
   static ValidCPF(controlName: string) {
     return (group: AbstractControl) => {
-      const formGroup = group as FormGroup;
+      const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
       const cpf = control.value;
 
@@ -158,7 +159,6 @@ export class ValidatorField {
         }
 
         if (!equalDigits) {
-          console.log('entrei')
           numbers = cpf.substring(0, 9);
           digits = cpf.substring(9);
           sum = 0;
@@ -192,7 +192,5 @@ export class ValidatorField {
       return null;
     };
   }
-
-  
 
 }

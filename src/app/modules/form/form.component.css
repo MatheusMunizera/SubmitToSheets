@@ -1,130 +1,127 @@
-
-form{
-    font-size: 1.5em;
-}   
-
-form button{
-    font-size: 1.3em;
-    background-color: #505050;
-    border: none;
-    padding: 5px 15px 5px 15px;
-    margin-right: 5px;
-    color: #f2f2f2;
-    font-family: 'Sue Ellen Francisco', cursive;
+form {
+  font-size: 1.5em;
 }
 
-.form-group{
+form button,a {
+  font-size: 1.3em;
+  background-color: #505050;
+  border: none;
+  padding: 5px 15px 5px 15px;
+  margin-right: 5px;
+  color: #f2f2f2;
+  font-family: "Sue Ellen Francisco", cursive;
+}
+
+.form-group {
+  width: 100%;
+}
+
+.form-group label {
+  width: 10%;
+}
+
+.form-group input {
+  background-color: #f2f2f200;
+  border: none;
+  border: #505050d7 2px solid;
+  font-family: "Sue Ellen Francisco", cursive;
+  font-size: 1.5em;
+}
+
+.form-group select {
+  background-color: #f2f2f200;
+  border: none;
+  border: #505050d7 2px solid;
+  font-family: "Sue Ellen Francisco", cursive;
+  font-size: 1em;
+}
+
+.form-group input[type="text"]:hover {
+  background-color: #505050;
+  color: #f2f2f2;
+}
+
+.form-group textarea {
+  width: 100%;
+  background: #f2f2f200;
+  border: #505050d7 2px solid;
+  font-family: "Sue Ellen Francisco", cursive;
+  font-size: 1.3em;
+}
+
+form {
+  padding-bottom: 15px;
+}
+.is-invalid input {
+  border-color: #dc3545 !important;
+}
+
+.is-invalid select {
+  border-color: #dc3545 !important;
+}
+
+.d-block {
+  display: block !important;
+}
+.form-buttons > button:active,a:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.form-buttons > button:hover,a:hover {
+  background-color: #3e8e41;
+}
+.form-buttons > button,a {
+  text-transform: uppercase !important;
+}
+.form-buttons {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+@media (min-width: 320px) {
+  .form-buttons {
     width: 100%;
-}
+    text-align: center;
+    margin: auto;
+  }
 
-.form-group label{
-    width: 10%;
-}
+  .form-buttons > button,a {
+    margin-top: 1rem;
+  }
 
-.form-group input{
-    background-color: #f2f2f200;
-    border: none;
-    border: #505050d7 2px solid;
-    font-family: 'Sue Ellen Francisco', cursive;
-    font-size: 1.5em;
-}
-
-.form-group select{
-    background-color: #f2f2f200;
-    border: none;
-    border: #505050d7 2px solid;
-    font-family: 'Sue Ellen Francisco', cursive;
-    font-size: 1em;
-}
-
-.form-group input[type=text]:hover{
-    background-color: #505050;
-    color: #f2f2f2;
-}
-
-.form-group textarea{
+  .form-group input,
+  .form-group label {
     width: 100%;
-    background: #f2f2f200;
-    border: #505050d7 2px solid;
-    font-family: 'Sue Ellen Francisco', cursive;
-    font-size: 1.3em;
+  }
+
+  .form-group input {
+    color: #505050;
+    height: 40px;
+    margin-bottom: -12px;
+  }
 }
 
-form{
-    padding-bottom: 15px;
+@media (min-width: 768px) {
+  .text-center {
+    text-align: center;
+  }
+  .ml-2 {
+    margin-left: 2rem;
+  }
+
+  .resize {
+    display: flex;
+  }
 }
 
+@media (min-width: 1200px) {
+  .form-buttons {
+    text-align: right;
+    float: right;
+  }
 
-
-
-
-    .is-invalid input {
-        
-        border-color: #dc3545 !important;
-    }
-
-    .is-invalid select {
-        
-        border-color: #dc3545 !important;
-    }
-
-.d-block{
-    display: block !important;
+  .sheets-link{
+    float: left !important;
+  }
 }
-
-
-.form-buttons>button{
-    text-transform: uppercase !important;
-}
-.form-buttons{
-    margin-top: 2rem !important;
-    margin-bottom: 2rem !important;
-}
-@media (min-width: 320px){
-
-
-    .form-buttons{
-        width: 100%;
-        text-align: center;
-        margin: auto;
-        
-    }
-
-    .form-buttons>button{
-        margin-top: 1rem;
-    }
-
-    .form-group input, .form-group label{
-        width: 100%;
-    }
-
-    .form-group input{
-        color: #505050;
-        height: 40px;
-        margin-bottom: -12px;
-    }
-}
-
-
-@media (min-width: 768px){
-
-    .text-center{
-        text-align: center;
-    }
-    .ml-2{
-        margin-left: 2rem;
-    }
-
-    .resize{
-        display: flex;
-    }
-}
-
-@media (min-width: 1200px){
-
-    .form-buttons{
-        text-align: right;
-    }
-
-}
-

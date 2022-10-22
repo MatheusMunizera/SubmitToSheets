@@ -27,7 +27,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },
@@ -102,5 +103,7 @@
       }
     }
   },
-  "defaultProject": "SubmitToSheets"
+  "cli": {
+    "analytics": "90926673-4e85-4231-8055-910dea8f58ae"
+  }
 }

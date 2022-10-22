@@ -6,7 +6,8 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { SocialMediaComponent } from './shared/social-media/social-media.component';
 import { SubmitToSheetsModule } from './modules/submit-to-sheets/submit-to-sheets.module';
-
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -18,8 +19,10 @@ import { SubmitToSheetsModule } from './modules/submit-to-sheets/submit-to-sheet
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
-    SubmitToSheetsModule
+    SubmitToSheetsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -6,12 +6,13 @@
                 You dont need to use real informations, try to generate data scraping from 4Devs website.
             </p>
         </div>
-        
-
+    
         <form [formGroup]="form" (submit)="submitToSheets()" >
-
+                   
             <div class="form-buttons">
-                <button type="button">Generate Data</button >
+                <a type="button" class="sheets-link" href="https://docs.google.com/spreadsheets/d/1PFCI_GqZ9p3aLPLwOA4oS55ylx-0g0wPDMEeDcrvtIk/edit?usp=sharing" target="_blank">Sheets</a>
+                <a type="button" class="sheets-link" href="https://github.com/MatheusMunizera/SheetsAPI" target="_blank">API</a>
+                <button type="button" (click)="getData()">Generate Data</button >
                 <button type="reset">Clean</button>
                 <button type="submit">Send</button>
             </div>
