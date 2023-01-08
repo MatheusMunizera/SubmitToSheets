@@ -5,14 +5,14 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { distinctUntilChanged, empty, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, empty, switchMap } from 'rxjs';
 import { ValidatorField } from 'src/app/helpers/validator/ValidatorField';
 import { ViacepService } from 'src/app/services/viacep.service';
 import { AddressViewModel } from 'src/app/view-models/address.view-model';
 import { SheetsService } from '../../services/sheets.service';
-import { FormsViewModel } from '../../view-models/forms.view-model';
 import { ToastrService } from 'ngx-toastr';
-import { HttpStatusCode } from '@angular/common/http';
+import { ScraperService } from '../../services/scraper.service';
+import { PersonViewModel } from '../../view-models/person.view-model';
 
 @Component({
   selector: 'app-form',
@@ -26,6 +26,7 @@ export class FormComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private viacepService: ViacepService,
     private sheetsService: SheetsService,
+    private scraperService: ScraperService,
     private toastr: ToastrService
   ) {}
 
@@ -104,19 +105,24 @@ export class FormComponent implements OnInit {
   }
 
   submitToSheets() {
+
+    const formObj = this.form.getRawValue();
+    console.log(formObj)
+
     if(this.form.invalid){
       this.toastr.error('YOU NEED TO INSERT ALL FIELDS CORRECTLY', 'ERROR' );
       return;
     }
 
-      const formObj = this.form.getRawValue();
-      this.sheetsService.writeOnSheet(formObj as FormsViewModel)
-    .subscribe(res => {
-        if( res.statusCode == HttpStatusCode.Created)
-        this.toastr.success('ROW ADDED', 'SUCCESS' );
-         else
-        this.toastr.error('CANT ADD ROW TO SHEETS, TRY AGAIN!', 'ERROR' );
-    })
+      // const formObj = this.form.getRawValue();
+      
+    //   this.sheetsService.writeOnSheet(formObj as FormsViewModel)
+    // .subscribe(res => {
+    //     if( res.statusCode == HttpStatusCode.Created)
+    //     this.toastr.success('ROW ADDED', 'SUCCESS' );
+    //      else
+    //     this.toastr.error('CANT ADD ROW TO SHEETS, TRY AGAIN!', 'ERROR' );
+    // })
 
   }
        
@@ -141,7 +147,37 @@ export class FormComponent implements OnInit {
   }
 
   getData(){
+    this.scraperService.getPerson().subscribe((res : PersonViewModel )=> {
+      const person = new PersonViewModel(res);
+     
+      console.log(person,'person')
+      
+      this.form.patchValue({
+        name: person.name,
+        father: person.father,
+        birthdate: person.birthdate,
+        age: person.age,
+        cpf: person.cpf,
+        rg: person.rg,
+        sign: person.sign,
+        mother: person.mother,
+        email: person.email,
+        cep: person.cep,
+        address: person.address,
+        number: person.number,
+        district: person.district,
+        city: person.city,
+        phone: person.phone,
+        height: person.height,
+        weight: person.weight,
+        blood: person.blood,
+        color: person.color,
+      })
 
-    this.toastr.warning('FEATURE NOT IMPLEMENTED', 'GENERATE DATA' );
+    this.form.controls['gender'].setValue(person.gender);
+
+     });
+
+    // this.toastr.warning('FEATURE NOT IMPLEMENTED', 'GENERATE DATA' );
   }
 }
