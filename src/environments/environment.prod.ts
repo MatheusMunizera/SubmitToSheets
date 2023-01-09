@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  api: 'https://sheetsapi.matheusmuniz.dev/'
+  SHEETS_API: 'https://sheetsapi.matheusmuniz.dev/',
+  SCRAPER_API: 'https://scrap4devs.matheusmuniz.dev/'
 };

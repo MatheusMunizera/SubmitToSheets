@@ -1,4 +1,9 @@
-import { AbstractControl, FormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { throwError } from 'rxjs';
 
 export class ValidatorField {
@@ -6,7 +11,7 @@ export class ValidatorField {
     return (group: AbstractControl) => {
       const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[mathchingControlName]
+      const matchingControl = formGroup.controls[mathchingControlName];
 
       if (matchingControl.errors && !matchingControl.errors['mustMach']) {
         return null;
@@ -89,15 +94,15 @@ export class ValidatorField {
     };
   }
 
-   
   static MustBeStrong(controlName: string): any {
     return (group: AbstractControl) => {
       const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
-      const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-      
-      if(!strongRegex.test(control.value))
-         control.setErrors({ strong: true });
+      const strongRegex = new RegExp(
+        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+      );
+
+      if (!strongRegex.test(control.value)) control.setErrors({ strong: true });
 
       if (control.errors && !control.errors['strong']) return null;
 
@@ -122,19 +127,49 @@ export class ValidatorField {
     return (group: AbstractControl) => {
       const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
-      let sign = control.value
-      let rgx = sign.normalize("NFD").replace(/[^a-zA-Z\s]/g, "")
+      let sign = control.value;
+      try {
+        let rgx = sign.normalize('NFD').replace(/[^a-zA-Z\s]/g, '');
 
-      const enSign = ['aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces' ]
-      const ptSign = ['aries','touro','gemeos','cancer','leao','virgem','libra','escorpiao','sagitario','capricornio','aquario','peixes' ]
-      const valueEn = enSign.includes(rgx.toLowerCase())
-      const valuePt = ptSign.includes(rgx.toLowerCase())
-      if(!valueEn && !valuePt) 
-        control.setErrors({signNotExists: true})
+      const enSign = [
+        'aries',
+        'taurus',
+        'gemini',
+        'cancer',
+        'leo',
+        'virgo',
+        'libra',
+        'scorpio',
+        'sagittarius',
+        'capricorn',
+        'aquarius',
+        'pisces',
+      ];
+      const ptSign = [
+        'aries',
+        'touro',
+        'gemeos',
+        'cancer',
+        'leao',
+        'virgem',
+        'libra',
+        'escorpiao',
+        'sagitario',
+        'capricornio',
+        'aquario',
+        'peixes',
+      ];
+      const valueEn = enSign.includes(rgx.toLowerCase());
+      const valuePt = ptSign.includes(rgx.toLowerCase());
+      if (!valueEn && !valuePt) control.setErrors({ signNotExists: true });
 
-        if (control.errors && !control.errors['signNotExists']) return null;
+      if (control.errors && !control.errors['signNotExists']) return null;
 
       return null;
+      } catch (error) {
+        return null;
+      }
+      
     };
   }
 
@@ -142,55 +177,39 @@ export class ValidatorField {
     return (group: AbstractControl) => {
       const formGroup = group as UntypedFormGroup;
       const control = formGroup.controls[controlName];
-      const cpf = control.value;
-
-      if (cpf) {
-        let numbers, digits, sum, i, result, equalDigits;
-        equalDigits = 1;
-        if (cpf.length !== 11  ) {
+      let cpf = control.value;
+      try {
+        cpf = cpf.replace(/[\s.-]*/gim, '');
+        if (
+          cpf.length !== 11 ||
+          !Array.from(cpf).filter((e) => e !== cpf[0]).length
+        ) {
           return control.setErrors({ cpfNotValid: true });
         }
-
-        for (i = 0; i < cpf.length - 1; i++) {
-          if (cpf.charAt(i) !== cpf.charAt(i + 1)) {
-            equalDigits = 0;
-            break;
-          }
-        }
-
-        if (!equalDigits) {
-          numbers = cpf.substring(0, 9);
-          digits = cpf.substring(9);
-          sum = 0;
-          for (i = 10; i > 1; i--) {
-            sum += numbers.charAt(10 - i) * i;
-          }
-
-          result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-
-          if (result !== Number(digits.charAt(0))) {
-            return control.setErrors({ cpfNotValid: true });
-          }
-          numbers = cpf.substring(0, 10);
-          sum = 0;
-
-          for (i = 11; i > 1; i--) {
-            sum += numbers.charAt(11 - i) * i;
-          }
-          result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
-
-          if (result !== Number(digits.charAt(1))) {
-            return control.setErrors({ cpfNotValid: true });
-          }
-          return null;
-        } else {
+  
+        var soma = 0;
+        var resto;
+        for (var i = 1; i <= 9; i++)
+          soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+        resto = (soma * 10) % 11;
+        if (resto == 10 || resto == 11) resto = 0;
+        if (resto != parseInt(cpf.substring(9, 10)))
           return control.setErrors({ cpfNotValid: true });
+        soma = 0;
+        for (var i = 1; i <= 10; i++)
+          soma = soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+        resto = (soma * 10) % 11;
+        if (resto == 10 || resto == 11) resto = 0;
+        if (resto != parseInt(cpf.substring(10, 11)))
+          return control.setErrors({ cpfNotValid: true });
+        return null;
+  
           
-        }
+      } catch (error) {
+        return null
       }
-
-      return null;
+      
+      
     };
   }
-
 }
