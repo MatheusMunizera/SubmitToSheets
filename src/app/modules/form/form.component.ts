@@ -5,13 +5,22 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { distinctUntilChanged, empty, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  distinctUntilChanged,
+  EMPTY,
+  empty,
+  finalize,
+  switchMap,
+} from 'rxjs';
 import { ValidatorField } from 'src/app/helpers/validator/ValidatorField';
 import { ViacepService } from 'src/app/services/viacep.service';
 import { AddressViewModel } from 'src/app/view-models/address.view-model';
 import { SheetsService } from '../../services/sheets.service';
-import { FormsViewModel } from '../../view-models/forms.view-model';
 import { ToastrService } from 'ngx-toastr';
+import { ScraperService } from '../../services/scraper.service';
+import { PersonViewModel } from '../../view-models/person.view-model';
+import { FormsViewModel } from '../../view-models/forms.view-model';
 import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
@@ -26,6 +35,7 @@ export class FormComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private viacepService: ViacepService,
     private sheetsService: SheetsService,
+    private scraperService: ScraperService,
     private toastr: ToastrService
   ) {}
 
@@ -58,12 +68,12 @@ export class FormComponent implements OnInit {
         age: ['', Validators.required],
         cpf: ['', Validators.required],
         rg: ['', Validators.required],
-        gender: ['', Validators.required, Validators.maxLength(1)],
+        gender: ['', [Validators.required, Validators.pattern('MALE|FEMALE|OTHERS')]],
         sign: ['', Validators.required],
         father: ['', Validators.required],
         mother: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required]],
+        password: ['', Validators.required],
         confirmPassword: ['', Validators.required],
         cep: ['', Validators.required],
         address: ['', Validators.required],
@@ -103,13 +113,21 @@ export class FormComponent implements OnInit {
     });
   }
 
+  
   submitToSheets() {
-    if(this.form.invalid){
-      this.toastr.error('YOU NEED TO INSERT ALL FIELDS CORRECTLY', 'ERROR' );
+
+    if (this.form.invalid) {
+      Object.keys(this.form.controls).forEach(field => { 
+        const control = this.form.get(field);           
+        control?.markAsTouched({ onlySelf: true });      
+      });
+
+      this.toastr.error('YOU NEED TO INSERT ALL FIELDS CORRECTLY', 'ERROR');
       return;
     }
 
-      const formObj = this.form.getRawValue();
+    const formObj = this.form.getRawValue();
+
       this.sheetsService.writeOnSheet(formObj as FormsViewModel)
     .subscribe(res => {
         if( res.statusCode == HttpStatusCode.Created)
@@ -117,9 +135,8 @@ export class FormComponent implements OnInit {
          else
         this.toastr.error('CANT ADD ROW TO SHEETS, TRY AGAIN!', 'ERROR' );
     })
-
   }
-       
+
   setAge(event: any) {
     const date = this.f.birthdate;
     if (!date.errors) {
@@ -140,8 +157,48 @@ export class FormComponent implements OnInit {
     return age;
   }
 
-  getData(){
+  async getData() {
+    this.scraperService
+      .getPerson()
+      .pipe(
+        catchError((err) => {
+          this.toastr.error(
+            'CANT GENERATE DATA FROM 4DEVS, TRY AGAIN!',
+            'ERROR'
+          );
+          console.log(err);
+          return EMPTY;
+        }),
 
-    this.toastr.warning('FEATURE NOT IMPLEMENTED', 'GENERATE DATA' );
+        finalize(() => {
+          this.toastr.success('DATA GENERATED FROM 4DEVS', 'SUCCESS');
+        })
+      )
+      .subscribe((res: PersonViewModel) => {
+        const person = new PersonViewModel(res);
+        this.form.patchValue({
+          name: person.name,
+          father: person.father,
+          birthdate: person.birthdate,
+          age: person.age,
+          cpf: person.cpf,
+          rg: person.rg,
+          sign: person.sign,
+          mother: person.mother,
+          email: person.email,
+          cep: person.cep,
+          address: person.address,
+          number: person.number,
+          district: person.district,
+          city: person.city,
+          phone: person.phone,
+          height: person.height,
+          weight: person.weight,
+          blood: person.blood,
+          color: person.color,
+        });
+
+        this.form.controls['gender'].setValue(person.gender);
+      });
   }
 }
