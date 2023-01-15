@@ -11,6 +11,7 @@ import {
   EMPTY,
   empty,
   finalize,
+  retry,
   switchMap,
 } from 'rxjs';
 import { ValidatorField } from 'src/app/helpers/validator/ValidatorField';
@@ -161,12 +162,13 @@ export class FormComponent implements OnInit {
     this.scraperService
       .getPerson()
       .pipe(
+        retry(3),
         catchError((err) => {
           this.toastr.error(
             'CANT GENERATE DATA FROM 4DEVS, TRY AGAIN!',
             'ERROR'
           );
-          console.log(err);
+          console.error(err);
           return EMPTY;
         }),
 
